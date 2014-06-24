@@ -41,32 +41,24 @@ class AnalyzeCaCertificates(object):
       """
       Find all ssh public keys and fingerprints
       """
-      # Get Pem
-      fingerprints = [ pems for pems in shell_out('find /Users /etc /usr/local /opt -name "*pem" -type f \
+      # Get .pem certificates
+      certificates = [ pems for pems in shell_out('find /Users /etc /usr/local /opt -name "*.pem" -type f \
                            -exec bash -c "echo -n \'{} \' && openssl x509 -noout -in {} -fingerprint" \; \
                            ').split('\n') if 'Fingerprint' in pems ]
-
-      # Format the returned fingerprints
-      for fp in fingerprints:
-        fp = fp.split()
-        print fp
-        #parsed_pems.append({fp[0]: fp[2].split('=')[1]})
+      # Get .crt certificates     
+      certificates += [ pems for pems in shell_out('find /Users /etc /usr/local /opt -name "*.crt" -type f \
+                           -exec bash -c "echo -n \'{} \' && openssl x509 -noout -in {} -fingerprint" \; \
+                           ').split('\n') if 'Fingerprint' in pems ]
       
-      exit()
+      # Format the returned fingerprints
+      for cert in certificates:
+        cert = cert.split()
 
-      # Loop through found fingerprints
-      for key in fingerprints:
-        
-        # Key Parts
-        key_parts = key.split()
-
-        # Append to master
+        # Add certs to datastore
         self.datastore.append({
-            "path": key_parts[0].replace('//', '/'),
-            "strength": key_parts[1],
-            "fingerprint": key_parts[2],
-            "comment": key_parts[3],
-            "key_type": key_parts[4],
+            "path": cert[0].replace('//', '/'),
+            "type": cert[1],
+            "fingerprint": cert[2].split('=')[1],
             "date": exec_date
           })
 
@@ -102,8 +94,10 @@ class AnalyzeCaCertificates(object):
         for k, v in schema.iteritems():
           ORM.initialize_table(k, v)
 
+        print ORM
+
         for row in self.datastore:
-          ORM.insert("certificate_check", row)
+          ORM.insert("certificates", row)
         
 
 if __name__ == "__main__":
