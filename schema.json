@@ -1,0 +1,20 @@
+{
+	"certificates": {
+		"path": {
+			"type": "text", 
+            "default" : "NULL"
+		}, 
+		"type": {
+			"type": "text",
+            "default" : "NULL"
+		},
+		"fingerprint": {
+            "default" : "NULL",
+			"type": "text"
+		},
+        "date" : {
+            "type" : "text",
+            "nullable" : false
+        }
+	}
+}
