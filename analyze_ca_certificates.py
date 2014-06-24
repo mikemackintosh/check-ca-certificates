@@ -28,7 +28,7 @@ logging_enabled = False
 # Set datastore directory
 DATASTORE = argv[1]
 
-#@run_every_60
+@run_every_60
 class AnalyzeCaCertificates(object):
     """ AnalyzeCaCertificates """
 
@@ -93,8 +93,6 @@ class AnalyzeCaCertificates(object):
 
         for k, v in schema.iteritems():
           ORM.initialize_table(k, v)
-
-        print ORM
 
         for row in self.datastore:
           ORM.insert("certificates", row)
