@@ -16,11 +16,10 @@ from sys import argv, exit
 from titantools.orm import TiORM
 from titantools.system import execute_command as shell_out
 
-# from sys import argv
 from time import time, gmtime, strftime
 from os.path import dirname,basename,isfile
 from os import chmod
-from titantools.decorators import run_every_60
+#from titantools.decorators import run_every_5
 
 # Set Logging Status
 logging_enabled = False
@@ -28,7 +27,7 @@ logging_enabled = False
 # Set datastore directory
 DATASTORE = argv[1]
 
-@run_every_60
+#@run_every_5
 class AnalyzeCaCertificates(object):
     """ AnalyzeCaCertificates """
 
@@ -56,7 +55,7 @@ class AnalyzeCaCertificates(object):
 
         # Add certs to datastore
         self.datastore.append({
-            "path": cert[0].replace('//', '/'),
+            "name": cert[0].replace('//', '/'),
             "type": cert[1],
             "fingerprint": cert[2].split('=')[1],
             "date": exec_date
