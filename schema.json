@@ -1,6 +1,6 @@
 {
 	"certificates": {
-		"path": {
+		"name": {
 			"type": "text", 
             "default" : "NULL"
 		}, 
