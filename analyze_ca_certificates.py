@@ -87,8 +87,6 @@ class AnalyzeCaCertificates(object):
 
         # ORM 
         ORM = TiORM(DATASTORE)
-        if isfile(DATASTORE):
-            chmod(DATASTORE, 0600)
 
         for k, v in schema.iteritems():
           ORM.initialize_table(k, v)
